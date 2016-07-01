@@ -17,7 +17,8 @@ from SquareDist import SquareDist
 from flipLabels import flipLabels
 from two_moons import two_moons
 
-start=time.time()
+#This is a test file for testing the translated code for
+# Task 1 with the dataset "Two Moons" in Release Lab 1-2. 
 
 npoints=50;
 pflip=0.05;
@@ -30,30 +31,26 @@ sigma=sigma[1]
 plt.figure(1)
 plt.scatter(Xtr[:,0], Xtr[:,1], 25, Ytr, edgecolor='None')
 
+c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[0])
+separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
 c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[1])
 separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
-
-# c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[1])
-# separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
-# c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[2])
-# separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
-# c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[3])
-# separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
+c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[2])
+separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
+c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[3])
+separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
 
 
 plt.figure(2)
 plt.scatter(Xts[:,0], Xts[:,1], 25, Yts, edgecolor='None')
 
+c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[0])
+separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
 c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[1])
 separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
+c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[2])
+separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
+c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[3])
+separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
 
-# c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[1])
-# separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
-# c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[2])
-# separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
-# c = regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l[3])
-# separatingFKernRLS(c, Xtr, kernel, sigma, Xts)
-#plt.show()
-
-end=time.time()
-print 'ttot', (end-start)
+plt.show()

@@ -7,6 +7,7 @@ import numpy as np
 from numpy import transpose as trsp
 from SquareDist import SquareDist
 
+
 def KernelMatrix(X1, X2, kernel, param):
     # Usage: K = KernelMatrix(X1, X2, kernel, param)
     # X1 and X2 are the two collections of points on which to compute the Gram matrix
