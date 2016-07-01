@@ -12,5 +12,3 @@ def regularizedKernLSTrain(Xtr, Ytr, kernel, sigma, l):
     K = KernelMatrix(Xtr, Xtr, kernel, sigma)
     c =np.linalg.solve((K + l * n * np.eye(n)), Ytr)
     return c
-
-#Test
