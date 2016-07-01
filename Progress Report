@@ -1,0 +1,32 @@
+Progress Report
+Sigurd Lekve
+
+Hello Valeriya.
+Release Lab 1-2 is translated from Matlab to python framework and is working properly. The execution time 
+of the code is okay, but the plotting may be a bit slow when the datasets gets big.
+
+There are probably better and more efficient ways to get the same results when translating the code. As it is
+now, it works and I hope it can serve its purpose.
+
+I am currently working on a GUI for the lab in Python. I am using Tkinter for the GUI, and have set up some of
+the layout and a little bit of functionality, but not a lot. Making a GUI for the labs will definitely take some
+time. Many details need work for the GUI to look good and perform well.
+
+The two other labs have a lot in common with the Release Lab 1-2, but has more options when it comes to simulating
+data and different filters for example. This means that there is not that much more to translate to have all the
+labs working in python.
+
+Fortunately it is all in the same framework, so the GUI for Release Lab 1-2 will work for the two other labs as
+well, it just needs a few more functions implemented. When the GUI and all the extra functionality is translated,
+it will probably need reviews and more documentation. However, right now, I am focusing on getting it to work and
+serve its purpose.
+
+This week I have finished the Release Lab 1-2 in Python framework and been doing research on how to make a
+GUI in Python. I was a little overwhelmed by all the possibilities when it comes to creating a GUI, but after
+choosing a way of doing it, it has been really enjoyable doing, I have learnt a lot and feel like I am
+making good progress.
+
+I have made a Github Repository for all the translated Python files and the little start I got on the GUI.
+
+I am looking forward to pick up where I left of in three weeks!
+
