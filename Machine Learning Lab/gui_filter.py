@@ -38,7 +38,7 @@ root.iconbitmap('simula.ico')
 root.wm_title('Machine Learning Lab')
 
 s=Style()
-s.theme_use('vista')
+s.theme_use('clam')
 
 # Input Frame ****************************************************
 #input_frame=Frame(root)
