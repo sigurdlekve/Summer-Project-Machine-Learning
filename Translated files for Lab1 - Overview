@@ -1,0 +1,44 @@
+This is an overview of which scripts are translated from matlab to python for Lab1.
+There are a lot of them that are not essential to the funtionallity of the lab and some of them are already embeded
+in the GUI.
+
+I will update this list as I work through the rest of the lab.
+
+Lab 1 – Main Folder
+    showinfowindow.m – not translated
+    save_challenge_1.m – not translated
+    lab1.pdf – not translated
+    gui_filter.m – partly translated
+    getstart.pdf – not translated
+    demo_multiclass.m – not translated
+    demo_lab1.m – not translated
+  Spectral_reg_toolbox
+    splitting.m – translated
+    kcv.m – translated
+    learn_error.m – translated
+    learn.m – translated
+    tsvd.m – translated
+    kernel.m – translated
+    EuclideanDistance.m – translated
+    autosigma.m – translated
+    rls.m – not translated
+    nu.m – not translated
+    land.m – not translated
+    patt_rec.m – not translated
+    ml_options.m – not translated (empty)
+    cutoff.m – not translated
+  Example_datasets (Not created)
+  Dataset_scripts
+    spiral.m – translated
+    sinusoidal.m – translated
+    moons.m – translated
+    linear_data.m - translated
+    gaussian.m – translated
+    save_dataset.m – not translated
+    plot_estimator – not translated
+    plot_dataset.m – not translated
+    load_dataset.m – not translated
+    create_dataset.m – not translated
+    main.m – not translated
+    automain.m – not translated
+
