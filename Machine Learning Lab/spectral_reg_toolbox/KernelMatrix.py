@@ -20,5 +20,5 @@ def KernelMatrix(X1, X2, kernel_type, KerPar):
     elif kernel_type == 'Polynomial':
         K = np.power((1 + np.dot(X1,trsp(X2))),KerPar)
     elif kernel_type == 'Gaussian':
-        K = np.exp((float(-1)/(float(2*KerPar**2)))*SquareDist(X1,X2))
+        K = np.exp((-1.0)/(2.0*float(KerPar)**2.0)*SquareDist(X1,X2))
     return K
