@@ -21,12 +21,12 @@ Lab 1 – Main Folder
     kernel.m – translated
     EuclideanDistance.m – translated
     autosigma.m – translated
-    rls.m – not translated
-    nu.m – not translated
-    land.m – not translated
+    rls.m – translated
+    nu.m – translated
+    land.m – translated
     patt_rec.m – not translated
     ml_options.m – not translated (empty)
-    cutoff.m – not translated
+    cutoff.m – translated
   Example_datasets (Not created)
   Dataset_scripts
     spiral.m – translated
