@@ -1,17 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from spectral_reg_toolbox import flipLabels
 
-def gaussian(N, nflips, ndist=1, means=np.array([[0, 0],[1.5, 1.5]]), sigmas=np.array([0.6, 0.6])):
+def gaussian(N, ndist=1, means=np.array([[-0.25, 0.0],[0.25, 0.0]]), sigmas=np.array([0.1, 0.1])):
     #Sample a dataset from a mixture of gaussians
-    #   [X, Y, ndist, means, sigmas] = gaussian(N, ndist, means, sigmas)
+    #   X, Y = gaussian(N, ndist, means, sigmas)
     #    INPUT 
     #    N      1x2 vector that fix the numberof samples from each class
     #    ndist  number of gaussian for each class. Default is 1.    
     #    means  vector of size(2*ndist X 2) with the means of each gaussian. 
-    #           Default is random.
+    #           Default is [[-0.25, 0.0],[0.25, 0.0]].
     #    sigmas A sequence of covariance matrices of size (2*ndist, 2). 
-    #           Default is random.
+    #           Default is [0.1, 0.1].
     #    OUTPUT
     #    X data matrix with a sample for each row 
     #       Y vector with the labels
@@ -38,5 +37,4 @@ def gaussian(N, nflips, ndist=1, means=np.array([[0, 0],[1.5, 1.5]]), sigmas=np.
     
     Y = np.ones((np.sum(N), 1))
     Y[0:N[0]]  = -1
-    Y=flipLabels(Y,nflips)
     return X, Y

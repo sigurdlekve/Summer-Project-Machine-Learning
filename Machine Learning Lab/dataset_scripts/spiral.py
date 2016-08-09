@@ -1,8 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from spectral_reg_toolbox import flipLabels
 
-def spiral(N, pflip, s=0.5, wrappings = 1 + np.random.random() * 8,  m=1 + np.random.random()):
+def spiral(N, s=0.35, wrappings = 2.5,  m=0.7):
     #Sample a dataset from a dataset separated by a sinusoidal line
     #   [X, Y, s, wrappings, m] = spiral(N, s, wrappings, m)
     #    INPUT 
@@ -30,6 +29,4 @@ def spiral(N, pflip, s=0.5, wrappings = 1 + np.random.random() * 8,  m=1 + np.ra
     
     Y = np.ones((np.sum(N), 1))
     Y[0:N[0]]  = -1
-    
-    Y=flipLabels(Y,pflip)
     return X, Y

@@ -1,11 +1,15 @@
 import numpy as np
-from scipy import sparse
+import scipy as sc
 
 from KernelMatrix import KernelMatrix, SquareDist
 from learn_error import learn_error
 from tsvd import tsvd
+from rls import rls
+from cutoff import cutoff
+from land import land
+from nu import nu
 
-def learn(knl, kpar, filt, t_range, X, y, task='class'):
+def learn(knl, kpar, filt, t_range, X, y, task='Classification'):
     #LEARN Learns an estimator. 
     #   ALPHA = LEARN(KNL, KPAR, FILT, T_RANGE, X, Y) calculates a set of 
     #   estimators given a kernel type 'KNL' and (if needed) a kernel parameter 
@@ -44,7 +48,7 @@ def learn(knl, kpar, filt, t_range, X, y, task='class'):
     #   See also KCV, KERNEL, LEARN_ERROR
     
     # Check inputs
-    if (filt=='nu' and len(t_range) != 1) or (filt=='land' and len(t_range) != 1):
+    if (filt=='NU-method' and len(t_range) != 1) or (filt=='Landweber' and len(t_range) != 1):
         print 'The dimension of the t_range array MUST be 1'           
     
     if (task=='Classification' or task=='Regression')==False:
@@ -59,28 +63,32 @@ def learn(knl, kpar, filt, t_range, X, y, task='class'):
         K = KernelMatrix(X, X, knl, kpar)
         
     # Algorithm execution
-    if filt=='land':
-        if knl=='gauss':
-            tau = 2
+    if filt=='Landweber':
+        if knl=='Gaussian':
+            tau = 2.0
         else:
             #opts.disp = 0;
             #opts.issym = 1;
             #s = eigs(K,1, 'LM', opts);
-            s = sparse.linalg.eigsh(K, 1, which='LM' )
-            tau = 2/s
-        print 'Calculated step size tau:', 'tau'        
+#             import pdb 
+#             pdb.set_trace()
+            s = sc.sparse.linalg.eigsh(K, 1, which='LM' )
+            print 's', s
+            print type(s), np.shape(s)
+            tau = 2.0/float(s[0][0])
+        print 'Calculated step size tau:', tau        
         alpha = land(K, t_range, y, tau, True)
 
-    elif filt=='nu':
+    elif filt=='NU-method':
         alpha = nu(K, t_range, y, True)
         
-    elif filt=='rls':
+    elif filt=='Reg. Least Squared':
         alpha = rls(K, t_range, y)
         
-    elif filt=='tsvd':
+    elif filt=='Truncated SVD':
         alpha = tsvd(K, t_range, y)
         
-    elif filt=='cutoff':
+    elif filt=='Spectral Cut-Off':
         alpha = cutoff(K, t_range, y)
         
     else:
@@ -88,10 +96,9 @@ def learn(knl, kpar, filt, t_range, X, y, task='class'):
     
     
     #Training Error requested
-    err = np.zeros((1,len(t_range)))
-    for i in range(0, np.size(alpha, axis=1)): 
-        pung=alpha[:,i]
-        pung=np.reshape(alpha[:,i], (np.size(K, axis=1),1))
-        y_lrnt = np.dot(K, pung)
-        err[0][i]=learn_error( y_lrnt, y, task)  
+    err = np.zeros((1,np.size(alpha, axis=1)))
+    for i in range(0, np.size(alpha, axis=1)):
+        alphai=np.reshape(alpha[:,i], (np.size(K, axis=1),1))
+        y_lrnt = np.dot(K, alphai)
+        err[0, i]=learn_error( y_lrnt, y, task)  
     return alpha, err

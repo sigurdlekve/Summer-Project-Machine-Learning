@@ -1,13 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from spectral_reg_toolbox import flipLabels
 
-def sinusoidal(N, pflip, s=0.1):
+def sinusoidal(N, s=0.02):
     #Sample a dataset from a dataset separated by a sinusoidal line
     #   [X, Y, s] = sinusoidal(N, m, b)
     #    INPUT 
     #    N      1x2 vector that fix the numberof samples from each class
-    #     s      standard deviation of the gaussian noise. Default is 0.1
+    #     s      standard deviation of the gaussian noise. Default is 0.02
     #    OUTPUT
     #    X data matrix with a sample for each row 
     #       Y vector with the labels
@@ -35,5 +34,4 @@ def sinusoidal(N, pflip, s=0.1):
     X[0,:]=np.concatenate((np.add(xx,(np.random.standard_normal((1,1))*s)),np.add(yy,(np.random.standard_normal((1,1))*s))), axis=1)
     Y = np.ones((np.sum(N), 1))
     Y[0:N[0]]  = -1
-    Y=flipLabels(Y,pflip)
     return X, Y

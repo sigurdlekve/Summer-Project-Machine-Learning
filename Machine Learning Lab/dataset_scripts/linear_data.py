@@ -1,21 +1,21 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from spectral_reg_toolbox import flipLabels
 
-def linear_data(N, pflip,  m=np.random.random() * 2 + 0.01, b=np.random.random()*0.5, s=0.1):
+def linear_data(N, m=1, b=0.2, s=0.05):
     #Sample a dataset from a linear separable dataset
-    #   [X, Y, m, b, s] = linear(N, m, b)
+    #   X, Y = linear(N, m, b)
     #    INPUT 
     #    N      1x2 vector that fix the numberof samples from each class
     #    m      slope of the separating line. Default is random.    
-    #    b      bias of the line. Default is random.
-    #    s      standard deviation of the gaussian noise. Default is 0.1
+    #    b      bias of the line. Default is 0.2.
+    #    s      standard deviation of the gaussian noise. Default is 0.05
     #    OUTPUT
     #    X data matrix with a sample for each row 
     #       Y vector with the labels
     #
     #   EXAMPLE:
     #       [X, Y] = linearData([10, 10]);
+    
     
     X=np.zeros((1,2))
     while(np.size(X,axis=0) < N[1]):
@@ -37,5 +37,17 @@ def linear_data(N, pflip,  m=np.random.random() * 2 + 0.01, b=np.random.random()
     X[0,:]=np.concatenate((np.add(xx,(np.random.standard_normal((1,1))*s)),np.add(yy,(np.random.standard_normal((1,1))*s))), axis=1)
     Y = np.ones((np.sum(N), 1))
     Y[0:N[0]]  = -1
-    Y=flipLabels(Y,pflip)
     return X, Y
+
+#Test
+#a=[10000,10000]
+#pflip=0
+#b=[[1],[1]]
+#ab=[a,b]
+#c=[[0.5],[0.3]]
+#n=100
+#X,Y=linear_data(a)
+#print X
+#print Y
+#plt.scatter(X[:,0],X[:,1],25,Y, edgecolor='None')
+#plt.show()

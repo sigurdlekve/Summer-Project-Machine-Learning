@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 
 def learn_error(y_learnt, y_test, learn_task):
     #LEARN_ERROR Compute the learning error.
@@ -16,7 +17,6 @@ def learn_error(y_learnt, y_test, learn_task):
     #       lrn_error = learn_error(y_learnt, y_test, 'regr');
     #
     # See also LEARN
-    y_learnt=np.reshape(y_learnt, (len(y_learnt),1))
     
     if learn_task=='Classification':
         lrn_error = (np.sum((np.multiply(y_learnt, y_test)) <= 0)) / float(len(y_test))

@@ -1,9 +1,15 @@
 import numpy as np
 import math
+import scipy.sparse.linalg
+
 from learn import learn
 from learn_error import learn_error
 from KernelMatrix import KernelMatrix, SquareDist
 from tsvd import tsvd
+from rls import rls
+from cutoff import cutoff
+from land import land
+from nu import nu
 from splitting import splitting
 
 def kcv(knl, kpar, filt, t_range, X, y, k, task, split_type):
@@ -78,9 +84,9 @@ def kcv(knl, kpar, filt, t_range, X, y, k, task, split_type):
         ## Learning
         alpha, err =  learn(knl, kpar, filt, t_range, X_train, y_train, task)
         print err
+        
         ## Test error estimation
-        # Error estimation over the test set, using the parameters given by the
-        # pprevious task
+        # Error estimation over the test set, using the parameters given by the previous task.
         K_test = KernelMatrix(X_test, X_train, knl, kpar)
         init_err_kcv=np.zeros((1, np.size(alpha, axis=1)))
         init_err_kcv=np.reshape(init_err_kcv, np.size(alpha, axis=1))
@@ -91,6 +97,7 @@ def kcv(knl, kpar, filt, t_range, X, y, k, task, split_type):
         for t in range(0, np.size(alpha, axis=1)):
             y_learnt = np.dot(K_test, alpha[:,t])
             err_kcv[split][t] =learn_error(y_learnt, y_test, task)
+    print err_kcv
                
     ## Average the error over different splits
     err_kcv=np.reshape(err_kcv, (np.size(err_kcv, axis=0), len(err_kcv[0])))
