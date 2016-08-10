@@ -156,6 +156,99 @@ import scipy.io as sio
 # print trange
 # print type(trange)
 # print len(trange)
+# test_dataset=sio.loadmat('C:\Users\Sigurd Lekve\Documents\MATLAB\Simula\Lab 1\spectral_reg_toolbox\\testdata_python.mat')
+#    
+# X=test_dataset['X']
+# Y=test_dataset['Y']
+# Xt=test_dataset['Xt']
+# Yt=test_dataset['Yt']
+# 
+# #X, Y = gaussian([5,5])
+# #Xt, Yt = gaussian([10,10])
+# print 'X', X
+# print 'Y', Y
+# print 'Xt', Xt
+# print 'Yt', Yt
+   
+# K = KernelMatrix(X, X, 'Gaussian', 1)
+# print K
+# alpha = nu(K, trange, Y)
+# print alpha
+
+# kernel_type='Gaussian'
+# s_value=1.0
+# filter_type='Reg. Least Squared'
+# trange=[0.1]
+# 
+# 
+# alpha, err = learn(kernel_type, s_value, filter_type, trange, X, Y)
+# min_err = min(err)
+# index = np.argmin(err)
+# K=KernelMatrix(Xt, X, kernel_type, s_value)
+# y_learnt = np.dot(K, alpha[:,index])
+# lrn_error = learn_error(y_learnt, Xt, 'Classification')
+# step = 1
+# min_ts0=min(Xt[:,0])
+# min_tr0=min(X[:,0])
+# min_abs0=min([min_ts0, min_tr0])
+#   
+# max_ts0=max(Xt[:,0])
+# max_tr0=max(X[:,0])
+# max_abs0=max([max_ts0, max_tr0])
+# 
+# min_ts1=min(Xt[:,1])
+# min_tr1=min(X[:,1])
+# min_abs1=min([min_ts1, min_tr1])
+#   
+# max_ts1=max(Xt[:,1])
+# max_tr1=max(X[:,1])
+# max_abs1=max([max_ts1, max_tr1])
+# 
+# print min_abs0
+# print max_abs0
+# print min_abs1
+# print max_abs1
+# 
+# ax=np.append(np.arange(min_abs0, max_abs0, step),max_abs0)
+# print ax
+# az=np.append(np.arange(min_abs1, max_abs1, step),max_abs1)
+# print az
+# a, b = np.meshgrid(ax,az)
+# print a
+# print np.shape(a)
+# print b
+# print np.shape(b)
+# na = np.reshape(a.T,(np.size(a),1))
+# print na
+# print np.shape(na)
+# nb = np.reshape(b.T,(np.size(b),1))
+# print nb
+# print np.shape(nb)
+# c = np.concatenate((na, nb), axis=1)
+# print c
+# print np.shape(c)
+# 
+# K=KernelMatrix(c, X, kernel_type, s_value)
+# print np.shape(K)
+# y_learnt=np.dot(K, alpha[:, index])
+# print y_learnt
+# print np.shape(y_learnt)
+# z=np.array(np.reshape(y_learnt,(np.size(a,axis=1),np.size(a,axis=0))).T)
+# z=np.array(z)
+# 
+# 
+# plt.figure(1)
+# plt.contourf(a, b, z, 1, colors=('w', 'b'), alpha=.3, antialiased=True)
+# plt.scatter(Xt[:,0],Xt[:,1],25,Yt,edgecolor='None')
+# 
+# 
+# plt.figure(2)
+# plt.contourf(a, b, z, 1, colors=('w', 'b'), alpha=.3, antialiased=True)
+# plt.scatter(X[:,0],X[:,1],25,Y,edgecolor='None')
+#  
+# plt.show()
+
+
 test_dataset=sio.loadmat('C:\Users\Sigurd Lekve\Documents\MATLAB\Simula\Lab 1\spectral_reg_toolbox\\testdata_python.mat')
    
 X=test_dataset['X']
@@ -169,83 +262,29 @@ print 'X', X
 print 'Y', Y
 print 'Xt', Xt
 print 'Yt', Yt
-   
-# K = KernelMatrix(X, X, 'Gaussian', 1)
-# print K
-# alpha = nu(K, trange, Y)
-# print alpha
 
-kernel_type='Gaussian'
-s_value=1.0
-filter_type='Reg. Least Squared'
-trange=[0.1]
+kernel_type='Polynomial'
+s_value=5.0
+filter_type='Landweber'
+trange=[100.0]
+task='Classification'
 
 
-alpha, err = learn(kernel_type, s_value, filter_type, trange, X, Y)
-min_err = min(err)
-index = np.argmin(err)
+alpha, err = learn(kernel_type, s_value, filter_type, trange, X, Y, task)
+        
+if filter_type=='Landweber' or filter_type=='NU-method':
+    min_err=min(err[0])
+    index=np.argmin(err[0])
+elif filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
+    min_err = min(err)
+    index = np.argmin(err)
+
+#Get best coefficients
+alpha_best = alpha[:, index]
+
+#Calculating error on test set
 K=KernelMatrix(Xt, X, kernel_type, s_value)
 y_learnt = np.dot(K, alpha[:,index])
-lrn_error = learn_error(y_learnt, Xt, 'Classification')
-step = 1
-min_ts0=min(Xt[:,0])
-min_tr0=min(X[:,0])
-min_abs0=min([min_ts0, min_tr0])
-  
-max_ts0=max(Xt[:,0])
-max_tr0=max(X[:,0])
-max_abs0=max([max_ts0, max_tr0])
-
-min_ts1=min(Xt[:,1])
-min_tr1=min(X[:,1])
-min_abs1=min([min_ts1, min_tr1])
-  
-max_ts1=max(Xt[:,1])
-max_tr1=max(X[:,1])
-max_abs1=max([max_ts1, max_tr1])
-
-print min_abs0
-print max_abs0
-print min_abs1
-print max_abs1
-
-ax=np.append(np.arange(min_abs0, max_abs0, step),max_abs0)
-print ax
-az=np.append(np.arange(min_abs1, max_abs1, step),max_abs1)
-print az
-a, b = np.meshgrid(ax,az)
-print a
-print np.shape(a)
-print b
-print np.shape(b)
-na = np.reshape(a.T,(np.size(a),1))
-print na
-print np.shape(na)
-nb = np.reshape(b.T,(np.size(b),1))
-print nb
-print np.shape(nb)
-c = np.concatenate((na, nb), axis=1)
-print c
-print np.shape(c)
-
-K=KernelMatrix(c, X, kernel_type, s_value)
-print np.shape(K)
-y_learnt=np.dot(K, alpha[:, index])
-print y_learnt
-print np.shape(y_learnt)
-z=np.array(np.reshape(y_learnt,(np.size(a,axis=1),np.size(a,axis=0))).T)
-z=np.array(z)
-
-
-plt.figure(1)
-plt.contourf(a, b, z, 1, colors=('w', 'b'), alpha=.3, antialiased=True)
-plt.scatter(Xt[:,0],Xt[:,1],25,Yt,edgecolor='None')
-
-
-plt.figure(2)
-plt.contourf(a, b, z, 1, colors=('w', 'b'), alpha=.3, antialiased=True)
-plt.scatter(X[:,0],X[:,1],25,Y,edgecolor='None')
-
- 
- 
-plt.show()
+lrn_error_ts = learn_error(y_learnt, Yt, task)
+import pdb
+pdb.set_trace()

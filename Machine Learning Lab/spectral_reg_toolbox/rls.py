@@ -24,8 +24,7 @@ def rls(K, t_range, y):
     
     for i in range(0,len(t_range)):
         t = t_range[i]
-        
-        dsi=ds+(t*n)
+        dsi=ds + (t*n)
         TikS_temp=np.zeros_like(ds)
         for j in range(0, len(ds)):
             TikS_temp[j]=1.0/dsi[j]

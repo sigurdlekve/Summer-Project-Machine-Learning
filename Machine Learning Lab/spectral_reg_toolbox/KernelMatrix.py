@@ -16,9 +16,9 @@ def SquareDist(X1, X2):
 
 def KernelMatrix(X1, X2, kernel_type, KerPar):
     if kernel_type == 'Linear':
-        K = np.dot(X1,trsp(X2))
+        K = np.matrix(np.dot(X1,trsp(X2)))
     elif kernel_type == 'Polynomial':
-        K = np.power((1 + np.dot(X1,trsp(X2))),KerPar)
+        K = np.matrix(np.power((1 + np.dot(X1,trsp(X2))),KerPar))
     elif kernel_type == 'Gaussian':
         K = np.exp((-1.0)/(2.0*float(KerPar)**2.0)*SquareDist(X1,X2))
     return K

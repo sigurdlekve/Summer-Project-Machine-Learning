@@ -115,16 +115,25 @@ flip_ratio_entry=Entry(data_frame, justify=CENTER)
 flip_ratio_entry.insert(0, 0.0)
 flip_ratio_entry.grid(row=4, column=1)
 
+
 def create_data():
     data_type=var_data.get()
-    ntr=int(ntr_samples_entry.get())
+    try:
+        ntr=int(ntr_samples_entry.get())
+        nts=int(nts_samples_entry.get())
+        pflip=float(flip_ratio_entry.get())
+        if pflip >= 1 or pflip<0 or ntr<0 or nts<0:
+            check_data=tkMessageBox.showwarning('Tips and Tricks', '# of training and test samples must be a positive integer,\n and wrong label ratio must be less than one and greater\n or equal to zero.')
+            return
+    except ValueError:
+        check_data=tkMessageBox.showwarning('Tips and Tricks', '# of training and test samples must be a positive integer,\n and wrong label ratio must be less than one and greater\n or equal to zero.')
+        return
+    
     ntr1=int(math.ceil(ntr/2.0))
     ntr2=int(math.floor(ntr/2.0))
-    nts=int(nts_samples_entry.get())
     nts1=int(math.ceil(float(nts/2)))
     nts2=int(math.floor(float(nts/2)))
-    pflip=float(flip_ratio_entry.get())
-  
+    
     if data_type=='Gaussian':
         gaussian_input_tr=[ntr1, ntr2]
         gaussian_input_ts=[nts1, nts2]
@@ -404,6 +413,7 @@ tr_error=' - - - '
 ts_error=' - - - '
 select_t=' - - - '
 select_sigma=' - - - '
+eplot_xlabel_t=' '
 
 tr_error_title=Label(results_frame, text='Training error')
 tr_error_title.grid(row=1, column=0, sticky=N+S+E+W)
@@ -425,7 +435,7 @@ select_sigma_title.grid(row=4, column=0, sticky=N+S+E+W)
 select_sigma_v=Label(results_frame, text=select_sigma)
 select_sigma_v.grid(row=4, column=2, sticky=N+S+E+W)
 
-def change_results(tr_error, ts_error, select_t, select_sigma):
+def change_results(tr_error, ts_error, select_t, select_sigma, eplot_xlabel_t):
     tr_error=str(tr_error)
     ts_error=str(ts_error)
     select_t=str(select_t)
@@ -434,6 +444,10 @@ def change_results(tr_error, ts_error, select_t, select_sigma):
     ts_error_v.config(text=ts_error)
     select_t_v.config(text=select_t)
     select_sigma_v.config(text=select_sigma)
+    
+    eplot_xlabel_t=str(eplot_xlabel_t)
+    eplot_xlabel.config(text=eplot_xlabel_t)
+    
     return
 
 
@@ -443,19 +457,17 @@ def change_results(tr_error, ts_error, select_t, select_sigma):
 #Eplot_frame Frame **************************************************
 eplot_frame=Frame(root)
 
-#eplot_title=Label(eplot_frame, text='KCV - Error Plot', font=('Verdana', 12, 'bold'))
-#eplot_title.grid(row=0, column=0, sticky=N+S+E+W)
+eplot_xlabel=Label(eplot_frame, text=eplot_xlabel_t)
+eplot_xlabel.grid(row=2, column=0, sticky=N+S+E+W)
 
 error_plot=Figure(figsize=(4,4), facecolor='lightgrey')
 
 subplot_error_t=error_plot.add_subplot(1,1,1)
 subplot_error_t.set_title('KCV - Error plot')
-#subplot_error_v=error_plot.add_subplot(1,1,1)
+subplot_error_t.set_ylabel('Error')
 e_empty1=0
 e_empty2=0
 subplot_error_t.plot(e_empty1, e_empty2)
-#subplot_error_v.plot(e_empty1, e_empty2)
-
 
 e_canvas=FigureCanvasTkAgg(error_plot, eplot_frame)          
 e_canvas.get_tk_widget().grid(row=0, column=0)
@@ -492,77 +504,111 @@ canvas.get_tk_widget().grid(row=1, column=0)
 
 
 
-
-
 # Bottom Frame ***************************************************
 bottom_frame=Frame(root)
-
-def def_filter(X1, X2):
-    filter_type=var_filter.get()
-    if np.array_equal(filter_type, 'Reg. Least Squared'):
-        filter=SquareDist(X1, X2)
-    else:
-        filter= 'Reg. Least Squared is only filter'
-        print filter
-    return filter
  
 def apply_classify():
 #     running=Toplevel()
 #     running.title(' ')
 #     msg=Message(running, text='Computing...')
 #     msg.pack()
+    subplot_ts.hold(False)
+    subplot_tr.hold(False)
+    subplot_classify_ts.hold(False)
+    subplot_classify_tr.hold(False)    
     
+    datafile = np.load('loadeddata.npz')
+    Xtr=datafile['Xtr']
+    Ytr=datafile['Ytr']
+    Xts=datafile['Xts']
+    Yts=datafile['Yts']
+
+    #Getting parameter from GUI:
+        
+    #Getting kernel type.    
+    kernel_type=var_kernel.get()
     
+    #Getting sigma value (fixed or auto).
+    if check_v_fixed_s.get()==1:
+        s_value=float(fixed_KerPar_entry.get())
+    elif check_v_auto.get()==1:
+        s_value=float(autosigma(Xtr, 5))
+    #Checking sigma input for kernel:
+    if kernel_type=='Polynomial':
+        try:
+            s_value=int(s_value)
+            if s_value<=0:
+               check_s_pol=tkMessageBox.showwarning('Tips and Tricks', 'The degree of the polynomial kernel has to be an integer greater than zero.')
+               return
+        except ValueError:
+            check_s_pol=tkMessageBox.showwarning('Tips and Tricks', 'The degree of the polynomial kernel has to be an integer greater than zero.')
+            return
+    elif kernel_type=='Gaussian':
+        if s_value<=0:
+            check_s_gauss=tkMessageBox.showwarning('Tips and Tricks', 'The kernel parameter for the gaussian kernel has to be greater than zero.')
+            return
+    elif kernel_type=='Linear':
+        s_value=[] #Setting sigma value to empty for linear kernel.
+         
+    
+    #Getting task (Classification or Regression).
+    if check_v_class.get()==1:
+        task='Classification'
+    elif check_v_class.get()==1:
+        task='Regression'    
 
     #Running with fixed regularization parameter (t).    
     if check_v_fixed_t.get()==1:
-        subplot_ts.hold(False)
-        subplot_tr.hold(False)
-        subplot_classify_ts.hold(False)
-        subplot_classify_tr.hold(False)
-        
-        datafile = np.load('loadeddata.npz')
-        Xtr=datafile['Xtr']
-        Ytr=datafile['Ytr']
-        Xts=datafile['Xts']
-        Yts=datafile['Yts']
-        
-        
         #Getting parameter from GUI:
+        
+        #Getting filter type.
+        filter_type=var_filter.get()
         
         #Getting fixed regularization prameter (t).
         trange=[float(fixed_t_entry.get())]
         
-        #Getting sigma value (fixed or auto).
-        if check_v_fixed_s.get()==1:
-            s_value=float(fixed_KerPar_entry.get())
-        elif check_v_auto.get()==1:
-            s_value=autosigma(Xtr, 5)
-            
-        #Getting kernel type.
-        kernel_type=var_kernel.get()
-        if kernel_type=='Linear':
-            s_value=[] #Setting sigma value to empty for linear kernel.
-            
-        #Getting filter type.
-        filter_type=var_filter.get()
+        #Checking t value for filters:
+        if filter_type=='Landweber':
+            trange=[fixed_t_entry.get()]
+            try:
+                trange=[int(trange[0])]
+                if trange[0]<=1:
+                    check_tval_land=tkMessageBox.showwarning('Tips and Tricks', 't max or fixed t must be a positive integer greater than one\n when using the filter Landweber.')
+                    return
+            except ValueError:
+                check_tval_land=tkMessageBox.showwarning('Tips and Tricks', 't max or fixed t must be a positive integer greater than one\n when using the filter Landweber.')
+                return
+        elif filter_type=='NU-method':
+            trange=[fixed_t_entry.get()]
+            try:
+                trange=[int(trange[0])]
+                if trange[0]<=2:
+                    check_tval_nu=tkMessageBox.showwarning('Tips and Tricks', 't max or fixed t must be a positive integer greater than two\n when using the filter NU-method.')
+                    return
+            except ValueError:
+                check_tval_nu=tkMessageBox.showwarning('Tips and Tricks', 't max or fixed t must be a positive integer greater than two\n when using the filter NU-method.')
+                return
+        elif filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
+            trange=[fixed_t_entry.get()]
+            try:
+                trange=[float(trange[0])]
+                if trange[0]<=0:
+                    check_tval_other=tkMessageBox.showwarning('Tips and Tricks', 'Fixed t must be a positive number greater than zero.')
+                    return
+            except ValueError:
+                check_tval_other=tkMessageBox.showwarning('Tips and Tricks', 'Fixed t must be a positive number greater than zero.')
+                return
         
-        #Getting task (Classification or Regression).
-        if check_v_class.get()==1:
-            task='Classification'
-        elif check_v_class.get()==0:
-            task='Regression'
-            
         #Plotting the classifier with the given parameters.
         alpha, err = learn(kernel_type, s_value, filter_type, trange, Xtr, Ytr, task)
         
         if filter_type=='Landweber' or filter_type=='NU-method':
-            min_err=err[0][-1]
-            index=trange[0]-1
+            min_err=min(err[0])
+            index=np.argmin(err[0])
         elif filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
             min_err = min(err)
             index = np.argmin(err)
-       
+        
         #Get best coefficients
         alpha_best = alpha[:, index]
         
@@ -570,13 +616,12 @@ def apply_classify():
         K=KernelMatrix(Xts, Xtr, kernel_type, s_value)
         y_learnt = np.dot(K, alpha[:,index])
         lrn_error_ts = learn_error(y_learnt, Yts, task)
-        print 'lrn_error_ts', lrn_error_ts
         
         step=0.1
         a, b, z = create_classify_plot(alpha_best, Xtr, Ytr, Xts, Yts, kernel_type, s_value, task, step)
         
-        subplot_classify_ts.contourf(a, b, z, 1, colors=('w', 'b'), alpha=.3, antialiased=True)
-        subplot_classify_tr.contourf(a, b, z, 1, colors=('w', 'b'), alpha=.3, antialiased=True)
+        subplot_classify_ts.contourf(a, b, z, 1, colors=('w', 'g'), alpha=.3, antialiased=True)
+        subplot_classify_tr.contourf(a, b, z, 1, colors=('w', 'g'), alpha=.3, antialiased=True)
         canvas=FigureCanvasTkAgg(main_plot, plot_frame)
         canvas.get_tk_widget().grid(row=1, column=0)
         subplot_ts.hold(True)
@@ -588,93 +633,99 @@ def apply_classify():
         
         
         select_t=float(trange[0])
-        select_sigma=s_value
+        if kernel_type=='Linear':
+            select_sigma=' - - - '
+        else:
+            select_sigma=float(s_value) 
         ts_error=float(lrn_error_ts)
         tr_error=float(min_err)
+        eplot_xlabel_t=' '
         
-        change_results(tr_error, ts_error, select_t, select_sigma)
+        change_results(tr_error, ts_error, select_t, select_sigma, eplot_xlabel_t)
         
     elif check_v_KCV.get()==1:
-        subplot_ts.hold(False)
-        subplot_tr.hold(False)
-        subplot_classify_ts.hold(False)
-        subplot_classify_tr.hold(False)
+
         subplot_error_t.hold(False)
-        
-        
-        datafile = np.load('loadeddata.npz')
-        Xtr=datafile['Xtr']
-        Ytr=datafile['Ytr']
-        Xts=datafile['Xts']
-        Yts=datafile['Yts']
         
         #Getting parameters from GUI:
         
-        #Getting sigma value (fixed or auto).
-        if check_v_fixed_s.get()==1:
-            s_value=float(fixed_KerPar_entry.get())
-        elif check_v_auto.get()==1:
-            s_value=float(autosigma(Xtr, 5))
-            
-        #Getting kernel type.    
-        kernel_type=var_kernel.get()
-        if kernel_type=='Linear':
-            s_value=[] #Setting sigma value to empty for linear kernel.
-        
         #Getting parameters for the range of regularization parameters used in the KCV-method.    
-        tmin=float(tmin_entry.get())
-        tmax=float(tmax_entry.get())
-        nt_values=float(nt_values_entry.get())
+        
+        #Checking tmin, tmax, nt_values:
+        filter_type=var_filter.get()
+        
+        if filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
+            try:
+                tmin=float(tmin_entry.get())
+                tmax=float(tmax_entry.get())
+                nt_values=int(nt_values_entry.get())
+                if tmin>=tmax or tmin==0:
+                    check_minmax=tkMessageBox.showwarning('Tips and Tricks', 'tmin has to be less than tmax, and cant be zero.')
+                    return
+                elif tmin<=0 or tmax<=0 or nt_values<=0:
+                    check_minmax=tkMessageBox.showwarning('Tips and Tricks', 'tmin and tmax have to be positive numbers,\n and number of t values has to be an positive integer.')
+                    return
+            except ValueError:
+                check_trange_input=tkMessageBox.showwarning('Tips and Tricks', 'tmin and tmax have to be positive numbers,\n and number of t values has to be an positive integer.')
+                return
+        elif filter_type=='Landweber':
+            trange=tmax_entry.get()
+            try:
+                trange=[int(trange)]
+                if trange[0]<=1:
+                    check_tval_land=tkMessageBox.showwarning('Tips and Tricks', 't max or fixed t must be a positive integer greater than one\n when using the filter Landweber.')
+                    return
+            except ValueError:
+                check_tval_land=tkMessageBox.showwarning('Tips and Tricks', 't max or fixed t must be a positive integer greater than one\n when using the filter Landweber.')
+                return
+        elif filter_type=='NU-method':
+            trange=tmax_entry.get()
+            try:
+                trange=[int(trange)]
+                if trange[0]<=2:
+                    check_tval_nu=tkMessageBox.showwarning('Tips and Tricks', 't max or fixed t must be a positive integer greater than two\n when using the filter NU-method.')
+                    return
+            except ValueError:
+                check_tval_nu=tkMessageBox.showwarning('Tips and Tricks', 't max or fixed t must be a positive integer greater than two\n when using the filter NU-method.')
+                return
         
         #Getting the users choice of either linear space or logaritmic space for the regularization parameters used in the KCV-method.
         space_type=var_Space.get()
-        if space_type=='Linear space':
-            trange=np.linspace(tmin, tmax, nt_values)
-        elif space_type=='Log space':
-            trange=np.logspace(tmin, tmax, nt_values)
-        
-        #Getting task (Classification or Regression).
-        if check_v_class.get()==1:
-            task='Classification'
-        elif check_v_class.get()==1:
-            task='Regression'
+        if filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
+            if space_type=='Linear space':
+                trange=np.linspace(tmin, tmax, nt_values)
+            elif space_type=='Log space':
+                trange=np.logspace(tmin, tmax, nt_values)
             
         #Getting the type of split and the number of splits to be used on the data set in the KCV-method (Sequential or Random).    
         split_type=var_Split.get()
-        k=float(n_split_entry.get())
-        
-        #Getting filter type.
-        filter_type=var_filter.get()
-        if filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
-            trange=trange
-        elif filter_type=='Landweber' or filter_type=='NU-method':
-            trange=[tmax]
+        try:
+            k=float(int(n_split_entry.get()))
+            if k<=0:
+                check_k=tkMessageBox.showwarning('Tips and Tricks', 'Number of splits has to be a positive integer.')
+                return
+        except ValueError:
+            check_k=tkMessageBox.showwarning('Tips and Tricks', 'Number of splits has to be a positive integer.')
+            return
         
         #Using KCV-method for choosing regularization parameter
         t_kcv_idx, avg_err_kcv=kcv(kernel_type, s_value, filter_type, trange, Xtr, Ytr, k, task, split_type)
         avg_err_kcv=np.ravel(avg_err_kcv)
         
-#         print 't_kcv_idx', t_kcv_idx
-#         
-#         print 'avg_err_kcv', np.shape(avg_err_kcv), avg_err_kcv
-#         print 'trange', np.shape(trange), trange
-#         print 'trange[t_kcv_idx]', trange[t_kcv_idx]
-#         print 'avg_err_kcv[t_kcv_idx]', avg_err_kcv[t_kcv_idx]
-#         
-#         print 'avg_err_kcv', avg_err_kcv
-#         print 'np.arange(1,len(avg_err_kcv)+1)', np.shape(np.arange(1, len(avg_err_kcv)+1)),np.arange(1, len(avg_err_kcv)+1)
-#         print 't_kcv_idx', t_kcv_idx
-#         print 'avg_err_kcv[t_kcv_idx]', avg_err_kcv[t_kcv_idx]
+        if filter_type=='Landweber' or filter_type=='NU-method':
+            tval=[t_kcv_idx]
+        elif filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
+            tval=[trange[t_kcv_idx]]
         
-        if len(trange)>1:
-            t=[trange[t_kcv_idx]]
-        elif len(trange)==1:
-            t=[t_kcv_idx]
+        alpha, err = learn(kernel_type, s_value, filter_type, tval, Xtr, Ytr, task)
         
+        if filter_type=='Landweber' or filter_type=='NU-method':
+            min_err=min(err[0])
+            index=np.argmin(err[0])
+        elif filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
+            min_err = min(err)
+            index = np.argmin(err)
         
-        alpha, err = learn(kernel_type, s_value, filter_type, t, Xtr, Ytr, task)
-        min_err = min(err)
-        index = np.argmin(err)
         #Get best coefficients
         alpha_best = alpha[:, index]
         
@@ -682,14 +733,13 @@ def apply_classify():
         K=KernelMatrix(Xts, Xtr, kernel_type, s_value)
         y_learnt = np.dot(K, alpha[:,index])
         lrn_error_ts = learn_error(y_learnt, Yts, task)
-        print 'lrn_error_ts', lrn_error_ts
         
         #Plotting the classifier
         step=0.1
         a, b, z = create_classify_plot(alpha_best, Xtr, Ytr, Xts, Yts, kernel_type, s_value, task, step)
         
-        subplot_classify_ts.contourf(a, b, z, 1, colors=('w', 'b'), alpha=.3, antialiased=True)
-        subplot_classify_tr.contourf(a, b, z, 1, colors=('w', 'b'), alpha=.3, antialiased=True)
+        subplot_classify_ts.contourf(a, b, z, 1, colors=('w', 'g'), alpha=.3, antialiased=True)
+        subplot_classify_tr.contourf(a, b, z, 1, colors=('w', 'g'), alpha=.3, antialiased=True)
         canvas=FigureCanvasTkAgg(main_plot, plot_frame)
         canvas.get_tk_widget().grid(row=1, column=0)
         subplot_ts.hold(True)
@@ -699,34 +749,37 @@ def apply_classify():
         canvas=FigureCanvasTkAgg(main_plot, plot_frame)
         canvas.get_tk_widget().grid(row=1, column=0)
         
-        
-        
-        
-        if len(trange)>1:
-            subplot_error_t.plot(trange, avg_err_kcv, 'b--', label='Training error')
+        if filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
+            subplot_error_t.plot(trange, avg_err_kcv, 'b--')
+            eplot_xlabel_t='reg.par range: %.4f - %.4f' %(min(trange), max(trange))
             subplot_error_t.hold(True)
             subplot_error_t.grid(True)
             subplot_error_t.plot(trange[t_kcv_idx], avg_err_kcv[t_kcv_idx], 'ro', linewidth=10.0, label='Test error')
             subplot_error_t.hold(True)
-            e_canvas=FigureCanvasTkAgg(error_plot, eplot_frame)          
+            subplot_error_t.set_title('KCV - Error plot')
+            e_canvas=FigureCanvasTkAgg(error_plot, eplot_frame)  
             e_canvas.get_tk_widget().grid(row=0, column=0)
-        elif len(trange)==1:
-            plot_trange= np.arange(1, len(avg_err_kcv)+1)
-            subplot_error_t.plot(plot_trange, avg_err_kcv, 'b--', label='Training error')
+        elif filter_type=='Landweber' or filter_type=='NU-method':
+            plot_trange= np.arange(0, len(avg_err_kcv))
+            subplot_error_t.plot(plot_trange, avg_err_kcv, 'b--')
+            eplot_xlabel_t='t range: 0 - %.4f' %float(trange[0])
             subplot_error_t.hold(True)
             subplot_error_t.grid(True)
             subplot_error_t.plot(t_kcv_idx, avg_err_kcv[t_kcv_idx], 'ro', linewidth=10.0, label='Test error')
             subplot_error_t.hold(True)
+            subplot_error_t.set_title('KCV - Error plot')
             e_canvas=FigureCanvasTkAgg(error_plot, eplot_frame)          
             e_canvas.get_tk_widget().grid(row=0, column=0)
+            
+        select_t=float(tval[0])
+        if kernel_type=='Linear':
+            select_sigma=' - - - '
+        else:
+            select_sigma=float(s_value)
+        ts_error=float(lrn_error_ts)
+        tr_error=float(min_err)
         
-        ts_error=' - - - '
-        tr_error=' - - - '
-        select_t=float(t[0])
-        select_sigma=float(s_value)
-        
-        change_results(tr_error, ts_error, select_t, select_sigma)
-        
+        change_results(tr_error, ts_error, select_t, select_sigma, eplot_xlabel_t)
     
     return
         
