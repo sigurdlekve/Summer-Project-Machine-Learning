@@ -5,13 +5,13 @@ in the GUI.
 I will update this list as I work through the rest of the lab.
 
 Lab 1 – Main Folder
-    showinfowindow.m – not translated
-    save_challenge_1.m – not translated
-    lab1.pdf – not translated
-    gui_filter.m – partly translated
-    getstart.pdf – not translated
-    demo_multiclass.m – not translated
-    demo_lab1.m – not translated
+        showinfowindow.m – not translated
+    save_challenge_1.m – translated
+        lab1.pdf – not translated
+    gui_filter.m – translated
+        getstart.pdf – not translated
+        demo_multiclass.m – not translated
+    demo_lab1.m – translated
   Spectral_reg_toolbox
     splitting.m – translated
     kcv.m – translated
@@ -24,8 +24,8 @@ Lab 1 – Main Folder
     rls.m – translated
     nu.m – translated
     land.m – translated
-    patt_rec.m – not translated
-    ml_options.m – not translated (empty)
+    patt_rec.m – translated
+        ml_options.m – not translated (empty)
     cutoff.m – translated
   Example_datasets (Not created)
   Dataset_scripts
@@ -34,11 +34,11 @@ Lab 1 – Main Folder
     moons.m – translated
     linear_data.m - translated
     gaussian.m – translated
-    save_dataset.m – not translated
-    plot_estimator – not translated
-    plot_dataset.m – not translated
-    load_dataset.m – not translated
-    create_dataset.m – not translated
-    main.m – not translated
-    automain.m – not translated
+        save_dataset.m – not translated
+    plot_estimator – translated
+        plot_dataset.m – not translated
+        load_dataset.m – not translated
+    create_dataset.m – translated
+        main.m – not translated
+        automain.m – not translated
 
