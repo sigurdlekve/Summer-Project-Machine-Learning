@@ -18,15 +18,14 @@ def learn(knl, kpar, filt, t_range, X, y, task='Classification'):
     #   the output vector 'Y[n,1]'.
     #
     #   The allowed values for 'KNL' and 'KPAR' are described in the
-    #   documentation given with the 'KERNEL' function. Moreover, it is possible to
-    #   give a custom kernel with 'KNL='cust'' and 'KPAR[n,n]' matrix.
+    #   documentation given with the 'KERNEL' function.
     #
     #   The allowed values for 'FILT' are:
-    #       'rls'   - regularized least squares
-    #       'land'  - iterative Landweber
-    #       'tsvd'  - truncated SVD
-    #       'nu'    - nu-method
-    #       'cutoff'- spectral cut-off
+    #       'Reg. Least Squared'   - regularized least squares
+    #       'Landweber'  - iterative Landweber
+    #       'Truncated SVD'  - truncated SVD
+    #       'NU-method'    - nu-method
+    #       'Spectral Cut-Off'- spectral cut-off
     #
     #   The parameter 'T_RANGE' may be a range of values or a single value.
     #   In case of 'FILT' equal 'land' or 'nu', 'T_RANGE' *MUST BE* a single
@@ -34,16 +33,16 @@ def learn(knl, kpar, filt, t_range, X, y, task='Classification'):
     #   LAND and NU documentation). Note that in case of 'land' the algorithm
     #   step size 'tau' will be automatically calculated (and printed).
     #
-    #   [ALPHA, ERR] = LEARN(KNL, FILT, T_RANGE, X, Y, TASK) also returns
+    #   ALPHA, ERR = LEARN(KNL, FILT, T_RANGE, X, Y, TASK) also returns
     #   either classification or regression errors (on the training data)
     #   according to the parameter 'TASK':
-    #       'class' - classification
-    #       'regr'  - regression
+    #       'Classification' - classification
+    #       'Regression'  - regression
     #
     #   Example:
-    #       alpha = learn('lin', [], 'rls', logspace (-3, 3, 7), X, y);
-    #       alpha = learn('gauss', 2.0, 'land', 100, X, y);
-    #       [alpha, err] = learn('lin', [] , 'tsvd', logspace(-3, 3, 7), X, y, 'regr');
+    #       alpha = learn('Linear', [], 'Reg. Least Squared', np.linspace(1, 10, 20), X, y)
+    #       alpha = learn('Gaussian', 2.0, 'Landweber', 100, X, y)
+    #       alpha, err = learn('Linear', [] , 'Truncated SVD', np.linspace(1, 10, 20), X, y, 'Regression')
     #
     #   See also KCV, KERNEL, LEARN_ERROR
     

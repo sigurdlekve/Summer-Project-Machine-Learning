@@ -2,7 +2,7 @@ import numpy as np
 
 def rls(K, t_range, y):
     #   RLS Calculates the coefficient vector using Tikhonov method.
-    #   [ALPHA] = RLS(K, lambdas, Y) calculates the least squares solution
+    #   ALPHA = RLS(K, lambdas, Y) calculates the least squares solution
     #   of the problem 'K*ALPHA = Y' given a kernel matrix 'K[n,n]' a 
     #   range of regularization parameters 'lambdas' and a label/output 
     #   vector 'Y'.
@@ -10,9 +10,9 @@ def rls(K, t_range, y):
     #   The function works even if 'T_RANGE' is a single value
     #
     #   Example:
-    #       K = kernel('lin', [], X, X);
-    #       alpha = rls(K, logspace(-3, 3, 7), y);
-    #       alpha = rls(K, 0.1, y);
+    #       K = KernelMatrix(X, X, 'Linear', [])
+    #       alpha = rls(K, np.linspace(1,10,20), y)
+    #       alpha = rls(K, 0.1, y)
     #
     # See also NU, TSVD, LAND, CUTOFF
     
@@ -31,8 +31,8 @@ def rls(K, t_range, y):
         
         TikS_temp=np.reshape(TikS_temp, (n,))
         TikS=np.diag(TikS_temp)
-        
-        TikK=np.linalg.multi_dot((V.T, TikS, U.T))
+        #TikK=np.linalg.multi_dot((V.T, TikS, U.T))
+        TikK=np.dot(np.dot(V.T,TikS), U.T)
         if i==0:
             alpha=np.dot(TikK, y)
             alpha=np.reshape(alpha, (len(alpha),1))

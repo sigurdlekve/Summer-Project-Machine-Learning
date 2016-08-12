@@ -3,19 +3,19 @@ import matplotlib.pyplot as plt
 
 def moons(N, s=0.1, angle = 3 * np.pi, d=1):
     #Sample a dataset from two "moon" distributions 
-    #   [X, Y, s, d, angle] = moons(N, s, d, angle)
+    #   X, Y = moons(N, s, angle, d)
     #    INPUT 
     #    N     1x2 vector that fix the numberof samples from each class
     #    s     standard deviation of the gaussian noise. Default is 0.1
+    #    angle rotation angle of the moons. Default is 3*pi.
     #    d     translation vector between the two classes. With d = 0
     #          the classes are placed on a circle. Default is 1.
-    #    angle rotation angle of the moons. Default is random.
     #    OUTPUT
     #    X data matrix with a sample for each row 
     #       Y vector with the labels
     #
     #   EXAMPLE:
-    #       [X, Y] = moons([10, 10]);
+    #       X, Y = moons([10, 10])
     
     d1 = -(np.random.random((1, 2)) * 0.6) + np.array([-0.2, -0.2])
     d2=np.array([[float(np.cos(-angle)), float(-np.sin(-angle))], [float(np.sin(-angle)), float(np.cos(-angle))]])

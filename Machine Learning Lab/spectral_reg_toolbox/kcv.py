@@ -14,7 +14,7 @@ from splitting import splitting
 
 def kcv(knl, kpar, filt, t_range, X, y, k, task, split_type):
     #KCV Perform K-Fold Cross Validation.
-    #   [T_KCV_IDX, ERR_KCV] = KCV(KNL, KPAR, FILT, T_RANGE, X, Y, K, TASK, SPLIT_TYPE) 
+    #   T_KCV_IDX, ERR_KCV = KCV(KNL, KPAR, FILT, T_RANGE, X, Y, K, TASK, SPLIT_TYPE) 
     #   performs k-fold cross validation to calculate the index of the 
     #   regularization parameter 'T_KCV_IDX' within a range 'T_RANGE' 
     #   which minimizes the average cross validation error 'AVG_ERR_KCV' given 
@@ -23,15 +23,14 @@ def kcv(knl, kpar, filt, t_range, X, y, k, task, split_type):
     #   'Y[n,1]'.
     #
     #   The allowed values for 'KNL' and 'KPAR' are described in the
-    #   documentation given with the 'KERNEL' function. Moreover, it is possible to
-    #   specify a custom kernel with 'KNL='cust'' and 'KPAR[n,n]' matrix.
+    #   documentation given with the 'KERNEL' function.
     #
     #   The allowed values for 'FILT' are:
-    #       'rls'   - regularized least squares
-    #       'land'  - iterative Landweber
-    #       'tsvd'  - truncated SVD
-    #       'nu'    - nu-method
-    #       'cutoff'- spectral cut-off
+    #       'Reg. Least Squared'   - regularized least squares
+    #       'Landweber'  - iterative Landweber
+    #       'Truncated SVD'  - truncated SVD
+    #       'NU-method'    - nu-method
+    #       'Spectral Cut-Off'- spectral cut-off
     #   
     #   The parameter 'T_RANGE' may be a range of values or a single value.
     #   In case 'FILT' equals 'land' or 'nu', 'T_RANGE' *MUST BE* a single
@@ -40,18 +39,18 @@ def kcv(knl, kpar, filt, t_range, X, y, k, task, split_type):
     #   step size 'tau' will be automatically calculated (and printed).
     #
     #   According to the parameter 'TASK':
-    #       'class' - classification
-    #       'regr'  - regression
+    #       'Classification' - classification
+    #       'Regression'  - regression
     #   the function minimizes the classification or regression error.
     #
     #   The last parameter 'SPLIT_TYPE' must be:
-    #       'seq' - sequential split (as default)
-    #       'rand' - random split
+    #       'Sequential' - sequential split (as default)
+    #       'Random' - random split
     #   as indicated in the 'SPLITTING' function.
     #
     #   Example:
-    #       [t_kcv_idx, avg_err_kcv] = kcv('lin', [], 'rls', logspace(-3, 3, 7), X, y, 5, 'class', 'seq')
-    #       [t_kcv_idx, avg_err_kcv] = kcv('gauss', 2.0, 'land', 100, X, y, 5, 'regr', 'rand')
+    #       t_kcv_idx, avg_err_kcv = kcv('Linear', [], 'Reg. Least Squared', np.linxpace(1, 10, 20), X, y, 5, 'Classification', 'Sequential')
+    #       [t_kcv_idx, avg_err_kcv] = kcv('Gaussian', 2.0, 'Landweber', 100, X, y, 5, 'Regression', 'Random')
     #
     # See also LEARN, KERNEL, SPLITTING, LEARN_ERROR
     

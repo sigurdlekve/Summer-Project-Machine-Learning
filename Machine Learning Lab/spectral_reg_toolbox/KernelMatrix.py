@@ -15,6 +15,21 @@ def SquareDist(X1, X2):
     return D   
 
 def KernelMatrix(X1, X2, kernel_type, KerPar):
+    #KERNEL Calculates a kernel matrix.
+    #   K = KERNELMATRIX(KNL, KPAR, X1, X2) calculates the nxN kernel matrix given
+    #   two matrix X1[n,d], X2[N,d] with kernel type specified by 'knl':
+    #       'Linear'   - linear kernel, 'kpar' is not considered
+    #       'Polynomial'   - polinomial kernel, where 'kpar' is the polinomial degree
+    #       'Gaussian' - gaussian kernel, where 'kpar' is the gaussian sigma
+    #
+    #   Example:
+    #       X1 = np.random.standard_normal((n, d))
+    #       X2 = np.random.standard_normal((N, d))
+    #       K = KernelMatrix(X1, X2, 'Linear', [])
+    #       K = kernel(X1, X2, 'Gaussian', 2.0)
+    #
+    # See also LEARN
+    
     if kernel_type == 'Linear':
         K = np.matrix(np.dot(X1,trsp(X2)))
     elif kernel_type == 'Polynomial':

@@ -249,42 +249,56 @@ import scipy.io as sio
 # plt.show()
 
 
-test_dataset=sio.loadmat('C:\Users\Sigurd Lekve\Documents\MATLAB\Simula\Lab 1\spectral_reg_toolbox\\testdata_python.mat')
-   
-X=test_dataset['X']
-Y=test_dataset['Y']
-Xt=test_dataset['Xt']
-Yt=test_dataset['Yt']
+# test_dataset=sio.loadmat('C:\Users\Sigurd Lekve\Documents\MATLAB\Simula\Lab 1\spectral_reg_toolbox\\testdata_python.mat')
+#    
+# X=test_dataset['X']
+# Y=test_dataset['Y']
+# Xt=test_dataset['Xt']
+# Yt=test_dataset['Yt']
+# 
+# #X, Y = gaussian([5,5])
+# #Xt, Yt = gaussian([10,10])
+# print 'X', X
+# print 'Y', Y
+# print 'Xt', Xt
+# print 'Yt', Yt
+# 
+# kernel_type='Polynomial'
+# s_value=5.0
+# filter_type='Landweber'
+# trange=[100.0]
+# task='Classification'
+# 
+# 
+# alpha, err = learn(kernel_type, s_value, filter_type, trange, X, Y, task)
+#         
+# if filter_type=='Landweber' or filter_type=='NU-method':
+#     min_err=min(err[0])
+#     index=np.argmin(err[0])
+# elif filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
+#     min_err = min(err)
+#     index = np.argmin(err)
+# 
+# #Get best coefficients
+# alpha_best = alpha[:, index]
+# 
+# #Calculating error on test set
+# K=KernelMatrix(Xt, X, kernel_type, s_value)
+# y_learnt = np.dot(K, alpha[:,index])
+# lrn_error_ts = learn_error(y_learnt, Yt, task)
 
-#X, Y = gaussian([5,5])
-#Xt, Yt = gaussian([10,10])
-print 'X', X
-print 'Y', Y
-print 'Xt', Xt
-print 'Yt', Yt
+try:
+    import Queue as Q  # ver. < 3.0
+except ImportError:
+    import queue as Q
+    
+def testtull():
+    print 'yeeeey'
+    return
 
-kernel_type='Polynomial'
-s_value=5.0
-filter_type='Landweber'
-trange=[100.0]
-task='Classification'
-
-
-alpha, err = learn(kernel_type, s_value, filter_type, trange, X, Y, task)
-        
-if filter_type=='Landweber' or filter_type=='NU-method':
-    min_err=min(err[0])
-    index=np.argmin(err[0])
-elif filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
-    min_err = min(err)
-    index = np.argmin(err)
-
-#Get best coefficients
-alpha_best = alpha[:, index]
-
-#Calculating error on test set
-K=KernelMatrix(Xt, X, kernel_type, s_value)
-y_learnt = np.dot(K, alpha[:,index])
-lrn_error_ts = learn_error(y_learnt, Yt, task)
-import pdb
-pdb.set_trace()
+q = Q.PriorityQueue()
+q.put((10,'ben'))
+q.put((1,'pupp'))
+q.put((5,testtull()))
+while not q.empty():
+    print q.get()

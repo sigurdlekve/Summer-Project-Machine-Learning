@@ -16,7 +16,7 @@ def gaussian(N, ndist=1, means=np.array([[-0.25, 0.0],[0.25, 0.0]]), sigmas=np.a
     #       Y vector with the labels
     #
     #   EXAMPLE:
-    #       [X, Y] = gaussian([10, 10]);
+    #       X, Y = gaussian([10, 10])
     
     X = []
     for i in range(1,N[0]+1):

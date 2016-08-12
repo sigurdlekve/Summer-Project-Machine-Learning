@@ -4,7 +4,7 @@ def splitting(y, k, split_type='Sequential'):
     # SPLITTING Calculate cross validation splits.
     #   SETS = SPLITTING(Y, K) splits a dataset to do K-Fold Cross validation 
     #   given a labels vector 'Y', the number of splits 'K'.
-    #   Returns a cell array of 'K' subsets of the indexes 1:n, with 
+    #   Returns a list of arrays array of 'K' subsets of the indexes 1:n, with 
     #   n=length(Y). The elements 1:n are split so that in each 
     #   subset the ratio between indexes corresponding to positive elements 
     #   of array 'Y' and indexes corresponding to negative elements of 'Y' is 
@@ -14,12 +14,12 @@ def splitting(y, k, split_type='Sequential'):
     #
     #   SETS = SPLITTING(Y, K, TYPE) allows to specify the 'TYPE' of the
     #   splitting of the chosen from
-    #       'seq' - sequential split (as default)
-    #       'rand' - random split
+    #       'Sequential' - sequential split (as default)
+    #       'Random' - random split
     #
     #    Example:
-    #       sets = splitting(y, k);
-    #       sets = splitting(y, k, 'rand');
+    #       sets = splitting(y, k)
+    #       sets = splitting(y, k, 'Random')
     #
     # See also KCV
 

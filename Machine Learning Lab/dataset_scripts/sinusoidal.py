@@ -3,16 +3,16 @@ import matplotlib.pyplot as plt
 
 def sinusoidal(N, s=0.02):
     #Sample a dataset from a dataset separated by a sinusoidal line
-    #   [X, Y, s] = sinusoidal(N, m, b)
+    #   X, Y = sinusoidal(N, m, b)
     #    INPUT 
     #    N      1x2 vector that fix the numberof samples from each class
-    #     s      standard deviation of the gaussian noise. Default is 0.02
+    #    s      standard deviation of the gaussian noise. Default is 0.02
     #    OUTPUT
     #    X data matrix with a sample for each row 
     #       Y vector with the labels
     #
     #   EXAMPLE:
-    #       [X, Y] = sinusoidal([10, 10])
+    #       X, Y = sinusoidal([10, 10])
     
     X=np.zeros((1,2))
     while (np.size(X, axis=0) < N[0]):

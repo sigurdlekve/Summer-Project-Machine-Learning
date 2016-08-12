@@ -8,7 +8,7 @@ def autosigma(X, K):
     #   'K' of nearest neighbors returned by the K-NN
     #   
     #   Example:
-    #        s = autosigma(X, 5);
+    #        s = autosigma(X, 5)
     #
     # See also KERNEL
     

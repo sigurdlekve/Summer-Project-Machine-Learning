@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 
 def linear_data(N, m=1, b=0.2, s=0.05):
     #Sample a dataset from a linear separable dataset
-    #   X, Y = linear(N, m, b)
+    #   X, Y = linear(N, m, b, s)
     #    INPUT 
     #    N      1x2 vector that fix the numberof samples from each class
-    #    m      slope of the separating line. Default is random.    
+    #    m      slope of the separating line. Default is 1.    
     #    b      bias of the line. Default is 0.2.
     #    s      standard deviation of the gaussian noise. Default is 0.05
     #    OUTPUT
@@ -14,7 +14,7 @@ def linear_data(N, m=1, b=0.2, s=0.05):
     #       Y vector with the labels
     #
     #   EXAMPLE:
-    #       [X, Y] = linearData([10, 10]);
+    #       X, Y = linearData([10, 10])
     
     
     X=np.zeros((1,2))
@@ -38,16 +38,3 @@ def linear_data(N, m=1, b=0.2, s=0.05):
     Y = np.ones((np.sum(N), 1))
     Y[0:N[0]]  = -1
     return X, Y
-
-#Test
-#a=[10000,10000]
-#pflip=0
-#b=[[1],[1]]
-#ab=[a,b]
-#c=[[0.5],[0.3]]
-#n=100
-#X,Y=linear_data(a)
-#print X
-#print Y
-#plt.scatter(X[:,0],X[:,1],25,Y, edgecolor='None')
-#plt.show()

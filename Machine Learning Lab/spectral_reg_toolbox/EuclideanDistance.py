@@ -3,7 +3,7 @@ import numpy as np
 def EuclideanDistance(a,b,df=0):
     # EUCLIDEAN - computes Euclidean distance matrix
     #
-    # E = euclidean(A,B)
+    # E = EuclideanDistance(A,B)
     #
     #    A - (DxM) matrix 
     #    B - (DxN) matrix
@@ -20,8 +20,9 @@ def EuclideanDistance(a,b,df=0):
     #                 ||A-B|| = sqrt ( ||A||^2 + ||B||^2 - 2*A.B )
     #
     # Example : 
-    #    A = rand(400,100); B = rand(400,200);
-    #    d = distance(A,B);
+    #    A = np.random.random((400,100)) 
+    #    B = np.random.random((400,200))
+    #    d = EuclideanDistance(A,B)
     
     # Author   : Roland Bunschoten
     #            University of Amsterdam
@@ -39,7 +40,8 @@ def EuclideanDistance(a,b,df=0):
     # Fixed by JBT (3/18/00) to work for 1-dimensional vectors
     # and to warn for imaginary numbers.  Also ensures that 
     # output is all real, and allows the option of forcing diagonals to
-    # be zero.  
+    # be zero.
+    # Translated to Python by Sigurd L. Lekve (08.11.16)  
     a=a.T
     b=b.T
     

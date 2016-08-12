@@ -3,20 +3,20 @@ import math
 
 def nu(K, t_max, y, all_path=False):
     #NU Calculates the coefficient vector using NU method.
-    #   [ALPHA] = NU(K, T_MAX, Y) calculates the solution of the problem 
+    #   ALPHA = NU(K, T_MAX, Y) calculates the solution of the problem 
     #   'K*ALPHA = Y' using NU method given a kernel matrix 
     #   'K[n,n]', the maximum number of the iterations 'T_MAX' and a 
     #   label/output vector 'Y'.
     #
-    #   [ALPHA] = NU(K, T_MAX, Y, ALL_PATH) returns only the last 
+    #   ALPHA = NU(K, T_MAX, Y, ALL_PATH) returns only the last 
     #   solution calculated using 'T_MAX' as regularization parameter if
     #   'ALL_PATH' is false(DEFAULT). Otherwise return all the regularization 
     #   path.
     #
     #   Example:
-    #       K = kernel('lin', [], X, X);
-    #       alpha = nu(K, 10, y);
-    #       alpha = nu(K, 10, y, true);
+    #       K = KernelMatrix(X, X, 'Linear', [])
+    #       alpha = nu(K, 10, y)
+    #       alpha = nu(K, 10, y, all_path=True)
     #
     # See also TSVD, CUTOFF, RLS, LAND
     
