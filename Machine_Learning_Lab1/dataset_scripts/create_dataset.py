@@ -13,7 +13,7 @@ def create_dataset(N, data_type, noise,
                     ndist=1, means=np.array([[-0.25, 0.0],[0.25, 0.0]]), sigmas=np.array([0.1, 0.1]),
                     ml=1, b=0.2, sl=0.05,
                     ssin=0.02,
-                    sspi=0.35, wrappings = 2.5,  mspi=0.7):
+                    sspi=1, wrappings = 4,  mspi=0.5):
     #Sample a dataset from different distributions
     #   X, Y = create_dataset(N, type, noise)
     #
@@ -45,9 +45,9 @@ def create_dataset(N, data_type, noise,
     #           1- ssin: standard deviation of the gaussian noise. Default is 0.02.
     #
     #       'Spiral' parameters:
-    #           1- sspi: standard deviation of the gaussian noise. Default is 0.35.
-    #           2- wrappings: wrappings number of wrappings of each spiral. Default is 2.5.
-    #           3- mspi: multiplier m of x * sin(m * x) for the second spiral. Default is 0.7.
+    #           1- sspi: standard deviation of the gaussian noise. Default is 1.
+    #           2- wrappings: wrappings number of wrappings of each spiral. Default is 4.
+    #           3- mspi: multiplier m of x * sin(m * x) for the second spiral. Default is 0.5.
     #
     #  OUTPUT
     #   X data matrix with a sample for each row 
