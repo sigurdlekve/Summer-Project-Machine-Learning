@@ -50,14 +50,19 @@ from spectral_reg_toolbox import create_classify_plot
 root=Tk()
 
 #Setting corner icon and title for main window.
-root.iconbitmap('simula.ico')
+#root.iconbitmap('simula.ico')
 root.wm_title('Machine Learning Lab')
 
 #Selecting a global theme for all widgets.
 s=Style()
 s.theme_use('clam')
 
-
+s.configure('New.TCheckbutton', font=('Verdana', 10))
+s.configure('New.TLabel', font=('Verdana', 10))
+s.configure('Title.TLabel', font=('Verdana', 13, 'bold'))
+s.configure('New.TButton', font=('Verdana', 10))
+#s.configure('New.TEntry', font=('Verdana', 16))
+#s.configure('New.TOptionMenu', font=('Verdana', 10))
 
 
 
@@ -67,19 +72,19 @@ s.theme_use('clam')
 task_frame=Frame(root)
 #task_frame.grid(row=1, column=0, sticky=W)
 
-task_title=Label(task_frame, text='Task', font=('Verdana', 12, 'bold'))
+task_title=Label(task_frame, text='Task', style='Title.TLabel')
 task_title.grid(row=0, column=0, sticky=N+S+E+W)
 
 def keep_task_check():
     check_v_class.set(1)
 
 check_v_class=IntVar()
-class_but_check=Checkbutton(task_frame, text='Classification', variable=check_v_class, command=keep_task_check)
+class_but_check=Checkbutton(task_frame, text='Classification', variable=check_v_class, command=keep_task_check, style='New.TCheckbutton')
 check_v_class.set(1)
 class_but_check.grid(row=1, column=0, sticky=N+S+E+W)
 
 check_v_reg=IntVar()
-reg_but_check=Checkbutton(task_frame, text='Regression', variable=check_v_reg, state=DISABLED)
+reg_but_check=Checkbutton(task_frame, text='Regression', variable=check_v_reg, state=DISABLED, style='New.TCheckbutton')
 check_v_reg.set(0)
 reg_but_check.grid(row=1, column=1, sticky=N+S+E+W)
 
@@ -91,28 +96,28 @@ data_frame=Frame(root)
 #data_frame.grid(row=2, column=0, sticky=N+S+E+W)
 
 # ??? Existing dataset ???
-data_title=Label(data_frame, text='Data type', font=('Verdana', 12, 'bold'))
+data_title=Label(data_frame, text='Data type', style='Title.TLabel')
 data_title.grid(row=0, column=0, sticky=N+S+E+W)
 
 var_data=StringVar(data_frame)
 data_type_menu=OptionMenu(data_frame, var_data,'Gaussian', 'Gaussian', 'Moons', 'Spiral', 'Sinusoidal', 'Linear')
 data_type_menu.grid(row=1, column=1)
 
-ntr_samples=Label(data_frame, text='# training samples')
+ntr_samples=Label(data_frame, text='# training samples', style='New.TLabel')
 ntr_samples.grid(row=2, column=0, sticky=N+S+E+W)
-ntr_samples_entry=Entry(data_frame, justify=CENTER)
+ntr_samples_entry=Entry(data_frame, justify=CENTER, font=('Verdana', 10))
 ntr_samples_entry.insert(0,100)
 ntr_samples_entry.grid(row=2, column=1)
 
-nts_samples=Label(data_frame, text='# test samples')
+nts_samples=Label(data_frame, text='# test samples', style='New.TLabel')
 nts_samples.grid(row=3, column=0, sticky=N+S+E+W)
-nts_samples_entry=Entry(data_frame, justify=CENTER)
+nts_samples_entry=Entry(data_frame, justify=CENTER, font=('Verdana', 10))
 nts_samples_entry.insert(0, 5000)
 nts_samples_entry.grid(row=3, column=1)
 
-flip_ratio=Label(data_frame, text='Wrong label ratio')
+flip_ratio=Label(data_frame, text='Wrong label ratio', style='New.TLabel')
 flip_ratio.grid(row=4, column=0, sticky=N+S+E+W)
-flip_ratio_entry=Entry(data_frame, justify=CENTER)
+flip_ratio_entry=Entry(data_frame, justify=CENTER, font=('Verdana', 10))
 flip_ratio_entry.insert(0, 0.0)
 flip_ratio_entry.grid(row=4, column=1)
 
@@ -145,7 +150,7 @@ def create_data():
       
     return Xtr, Ytr, Xts, Yts
 
-load_data_but=Button(data_frame, text='Load data', command=create_data)
+load_data_but=Button(data_frame, text='Load data', command=create_data, style='New.TButton')
 load_data_but.grid(row=5, column=1, sticky=N+S+E+W)
 
 
@@ -156,7 +161,7 @@ load_data_but.grid(row=5, column=1, sticky=N+S+E+W)
 #Filter Frame ****************************************************
 filter_frame=Frame(root)
 
-filter_title=Label(filter_frame, text='Filter', font=('Verdana', 12, 'bold'))
+filter_title=Label(filter_frame, text='Filter', style='Title.TLabel')
 filter_title.grid(row=0, column=0, sticky=N+S+E+W)
 
 def filter_choice(filter_type):
@@ -179,7 +184,7 @@ filter_type_menu.grid(row=1, column=0, sticky=N+S+E+W)
 #Kernel Frame ****************************************************
 kernel_frame=Frame(root)
 
-kernel_title=Label(kernel_frame, text='Kernel', font=('Verdana', 12, 'bold'))
+kernel_title=Label(kernel_frame, text='Kernel', style='Title.TLabel')
 kernel_title.grid(row=0, column=0, sticky=N+S+E+W)
 
 def kernel_choice(kernel):
@@ -235,14 +240,14 @@ var_kernel=StringVar(kernel_frame)
 kernel_type_menu=OptionMenu(kernel_frame, var_kernel,'Polynomial', 'Linear', 'Polynomial', 'Gaussian', command=kernel_choice)
 kernel_type_menu.grid(row=1, column=0, sticky=N+S+E+W)
 
-fixed_KerPar_but_check=Checkbutton(kernel_frame, text='Use fixed s value', variable=check_v_fixed_s, command=checking_fixed_KerPar)
+fixed_KerPar_but_check=Checkbutton(kernel_frame, text='Use fixed s value', variable=check_v_fixed_s, command=checking_fixed_KerPar, style='New.TCheckbutton')
 check_v_fixed_s.set(1)
 fixed_KerPar_but_check.grid(row=2, column=0, sticky=N+S+E+W)
-fixed_KerPar_entry=Entry(kernel_frame, justify=CENTER)
+fixed_KerPar_entry=Entry(kernel_frame, justify=CENTER, font=('Verdana', 10))
 fixed_KerPar_entry.insert(0,3)
 fixed_KerPar_entry.grid(row=2, column=1, sticky=N+S+E+W)
 
-autosigma_but_check=Checkbutton(kernel_frame, text='Autosigma', state=DISABLED, variable=check_v_auto, command=checking_auto)
+autosigma_but_check=Checkbutton(kernel_frame, text='Autosigma', state=DISABLED, variable=check_v_auto, command=checking_auto, style='New.TCheckbutton')
 check_v_auto.set(0)
 autosigma_but_check.grid(row=3, column=0, sticky=N+S+E+W)
 
@@ -256,7 +261,7 @@ autosigma_but_check.grid(row=3, column=0, sticky=N+S+E+W)
 #Learning Frame *************************************************
 learning_frame=Frame(root)
 
-learning_title=Label(learning_frame, text='Learning', font=('Verdana', 12, 'bold'))
+learning_title=Label(learning_frame, text='Learning', style='Title.TLabel')
 learning_title.grid(row=0, column=0, sticky=N+S+E+W)
 
 # ????? Using KCV ??????
@@ -308,49 +313,49 @@ def checking_fixed_t():
 check_v_KCV=IntVar()
 check_v_fixed_t=IntVar()
 
-fixed_t_but_check=Checkbutton(learning_frame, text='Use fixed t value', variable=check_v_fixed_t, command=checking_fixed_t)
+fixed_t_but_check=Checkbutton(learning_frame, text='Use fixed t value', variable=check_v_fixed_t, command=checking_fixed_t, style='New.TCheckbutton')
 check_v_fixed_t.set(1)
 fixed_t_but_check.grid(row=8, column=0, sticky=N+S+E+W)
 
-fixed_t_entry=Entry(learning_frame, justify=CENTER)
+fixed_t_entry=Entry(learning_frame, justify=CENTER, font=('Verdana', 10))
 fixed_t_entry.insert(0,0.01)
 fixed_t_entry.grid(row=8, column=1, sticky=N+S+E+W)
 
-KCV_but_check=Checkbutton(learning_frame, text='Use KCV', variable=check_v_KCV, command=checking_KCV)
+KCV_but_check=Checkbutton(learning_frame, text='Use KCV', variable=check_v_KCV, command=checking_KCV, style='New.TCheckbutton')
 check_v_KCV.set(0)
 KCV_but_check.grid(row=1, column=0, sticky=N+S+E+W)
 
-Split=Label(learning_frame, text='Split')
+Split=Label(learning_frame, text='Split', style='New.TLabel')
 Split.grid(row=2, column=0, sticky=N+S+E+W)
 var_Split=StringVar(learning_frame)
 Split_type_menu=OptionMenu(learning_frame, var_Split,'Sequential', 'Sequential', 'Random')
 Split_type_menu.grid(row=2, column=1)
 
-n_split=Label(learning_frame, text='# split')
+n_split=Label(learning_frame, text='# split', style='New.TLabel')
 n_split.grid(row=3, column=0, sticky=N+S+E+W)
-n_split_entry=Entry(learning_frame, justify=CENTER)
+n_split_entry=Entry(learning_frame, justify=CENTER, font=('Verdana', 10))
 n_split_entry.insert(0, 5)
 n_split_entry.grid(row=3, column=1)
 
-tmin_l=Label(learning_frame, text='t min')
+tmin_l=Label(learning_frame, text='t min', style='New.TLabel')
 tmin_l.grid(row=4, column=0, sticky=N+S+E+W)
-tmin_entry=Entry(learning_frame, justify=CENTER)
+tmin_entry=Entry(learning_frame, justify=CENTER, font=('Verdana', 10))
 tmin_entry.insert(0, 0.001)
 tmin_entry.grid(row=4, column=1)
 
-tmax_l=Label(learning_frame, text='t max')
+tmax_l=Label(learning_frame, text='t max', style='New.TLabel')
 tmax_l.grid(row=5, column=0, sticky=N+S+E+W)
-tmax_entry=Entry(learning_frame, justify=CENTER)
+tmax_entry=Entry(learning_frame, justify=CENTER, font=('Verdana', 10))
 tmax_entry.insert(0, 1)
 tmax_entry.grid(row=5, column=1)
 
-nt_values_l=Label(learning_frame, text='# of t values')
+nt_values_l=Label(learning_frame, text='# of t values', style='New.TLabel')
 nt_values_l.grid(row=6, column=0, sticky=N+S+E+W)
-nt_values_entry=Entry(learning_frame, justify=CENTER)
+nt_values_entry=Entry(learning_frame, justify=CENTER, font=('Verdana', 10))
 nt_values_entry.insert(0, 10)
 nt_values_entry.grid(row=6, column=1)
 
-Space=Label(learning_frame, text='Space')
+Space=Label(learning_frame, text='Space', style='New.TLabel')
 Space.grid(row=7, column=0, sticky=N+S+E+W)
 var_Space=StringVar(learning_frame)
 Space_type_menu=OptionMenu(learning_frame, var_Space,'Linear space', 'Linear space', 'Log space')
@@ -371,7 +376,7 @@ Space_type_menu.config(state='disabled')
 #Results Frame ******************************************************
 results_frame=Frame(root)
 
-results_title=Label(results_frame, text='Results', font=('Verdana', 12, 'bold'))
+results_title=Label(results_frame, text='Results', style='Title.TLabel')
 results_title.grid(row=0, column=0, sticky=N+S+E+W)
 
 tr_error=' - - - '
@@ -380,24 +385,24 @@ select_t=' - - - '
 select_sigma=' - - - '
 eplot_xlabel_t=' '
 
-tr_error_title=Label(results_frame, text='Training error')
+tr_error_title=Label(results_frame, text='Training error', style='New.TLabel')
 tr_error_title.grid(row=1, column=0, sticky=N+S+E+W)
-tr_error_v=Label(results_frame, text=tr_error)
+tr_error_v=Label(results_frame, text=tr_error, style='New.TLabel')
 tr_error_v.grid(row=1, column=2, sticky=N+S+E+W)
 
-ts_error_title=Label(results_frame, text='Test error')
+ts_error_title=Label(results_frame, text='Test error', style='New.TLabel')
 ts_error_title.grid(row=2, column=0, sticky=N+S+E+W)
-ts_error_v=Label(results_frame, text=ts_error)
+ts_error_v=Label(results_frame, text=ts_error, style='New.TLabel')
 ts_error_v.grid(row=2, column=2, sticky=N+S+E+W)
 
-select_t_title=Label(results_frame, text='Selected t')
+select_t_title=Label(results_frame, text='Selected t', style='New.TLabel')
 select_t_title.grid(row=3, column=0, sticky=N+S+E+W)
-select_t_v=Label(results_frame, text=select_t)
+select_t_v=Label(results_frame, text=select_t, style='New.TLabel')
 select_t_v.grid(row=3, column=2, sticky=N+S+E+W)
 
-select_sigma_title=Label(results_frame, text='Selected sigma')
+select_sigma_title=Label(results_frame, text='Selected sigma', style='New.TLabel')
 select_sigma_title.grid(row=4, column=0, sticky=N+S+E+W)
-select_sigma_v=Label(results_frame, text=select_sigma)
+select_sigma_v=Label(results_frame, text=select_sigma, style='New.TLabel')
 select_sigma_v.grid(row=4, column=2, sticky=N+S+E+W)
 
 def change_results(tr_error, ts_error, select_t, select_sigma, eplot_xlabel_t):
@@ -422,10 +427,10 @@ def change_results(tr_error, ts_error, select_t, select_sigma, eplot_xlabel_t):
 #Eplot_frame Frame **************************************************
 eplot_frame=Frame(root)
 
-eplot_xlabel=Label(eplot_frame, text=eplot_xlabel_t)
+eplot_xlabel=Label(eplot_frame, text=eplot_xlabel_t, style='New.TLabel')
 eplot_xlabel.grid(row=4, column=0, sticky=N+S+E+W)
 
-error_plot=Figure(figsize=(4,4), facecolor='lightgrey')
+error_plot=Figure(figsize=(6,4), facecolor='lightgrey')
 
 subplot_error_t=error_plot.add_subplot(1,1,1)
 subplot_error_t.set_title('KCV - Error plot')
@@ -439,17 +444,17 @@ e_canvas.get_tk_widget().grid(columnspan=2, row=0, column=0)
 
 check_v_logx=IntVar()
 
-ax_logx_check=Checkbutton(eplot_frame, text='Logaritmic x-axis', variable=check_v_logx)
+ax_logx_check=Checkbutton(eplot_frame, text='Logaritmic x-axis', variable=check_v_logx, style='New.TCheckbutton')
 check_v_logx.set(0)
 ax_logx_check.grid(row=3, column=0, sticky=N+S+E+W)
 
 #Plot Frame *****************************************************
 plot_frame=Frame(root)
 
-plot_title=Label(plot_frame, text='Plot', font=('Verdana', 12, 'bold'))
+plot_title=Label(plot_frame, text='Plot', style='Title.TLabel')
 plot_title.grid(row=0, column=0, sticky=N+S+E+W)
 
-main_plot=Figure(figsize=(11,4), facecolor='lightgrey')
+main_plot=Figure(figsize=(14,5), facecolor='lightgrey')
 
 subplot_ts=main_plot.add_subplot(1,2,1)
 subplot_ts.set_title('Test')
@@ -478,20 +483,6 @@ canvas.get_tk_widget().grid(row=1, column=0)
 bottom_frame=Frame(root)
 
 def apply_classify():
-    
-#     import threading
-#     
-#     def run_box():
-#         running=Toplevel(root)
-#         run_label=Label(running, text='Computing...')
-#         run_label.grid(row=0, column=0)
-#         traa=threading.Thread(target=run_box)
-#         traa.start()
-#         return
-#     run_box()
-
-    #running=tkMessageBox.showinfo('Tips and Tricks', 'Starting computation.')
-
     
     subplot_ts.hold(False)
     subplot_tr.hold(False)
@@ -698,18 +689,14 @@ def apply_classify():
         t_kcv_idx, avg_err_kcv=kcv(kernel_type, s_value, filter_type, trange, Xtr, Ytr, k, task, split_type)
         avg_err_kcv=np.ravel(avg_err_kcv)
         
-        print 'done kcv'
-        
         if filter_type=='Landweber' or filter_type=='NU-method':
             tval=[t_kcv_idx+1]
-            print tval
 #             if filter_type == 'NU-method':
 #                 while tval[0]<3:
 #                     tval[0]=tval[0]+1
         elif filter_type=='Reg. Least Squared' or filter_type=='Truncated SVD' or filter_type=='Spectral Cut-Off':
             tval=[trange[t_kcv_idx]]
         
-        print tval
         alpha, err = learn(kernel_type, s_value, filter_type, tval, Xtr, Ytr, task)
         
         if filter_type=='Landweber' or filter_type=='NU-method':
@@ -783,21 +770,22 @@ def apply_classify():
     return
 
 running=Toplevel(root)
-run_label=Label(running, text='Computing...', font=('Verdana', 10, 'bold'))
+run_label=Label(running, text='Computing...', font=('Verdana', 14))
 run_label.pack(fill=BOTH, expand=True, padx=0, pady=0, ipadx=10, ipady=10)
 running.state('withdrawn')
 
 
 def button_push():
     running.state('normal')
+    running.lift()
     running.update()
     apply_classify()
     running.withdraw()
      
     return 
 
-run_but=Button(bottom_frame, text='Run', command=button_push)
-run_but.grid(row=0, column=0)
+run_but=Button(eplot_frame, text='Run', command=button_push, style='New.TButton')
+run_but.grid(row=5, column=0, sticky=N+S+W+E)
 
 # Placement ****************************************************
 for root_cols in range(3):
@@ -859,9 +847,9 @@ for eplot_rows in range(10):
   Grid.rowconfigure(eplot_frame, eplot_rows, weight=1)
   
 #Plot Frame
-for plot_cols in range(10):
+for plot_cols in range(1):
   Grid.columnconfigure(plot_frame, plot_cols, weight=1)
-for plot_rows in range(10):
+for plot_rows in range(2):
   Grid.rowconfigure(plot_frame, plot_rows, weight=1)
   
 #Bottom Frame
